@@ -16,7 +16,7 @@ from bs4 import BeautifulSoup
 import requests
 import json
 from langchain.schema import SystemMessage
-from fastapi import FastAPI
+#from fastapi import FastAPI
 import streamlit as st
 
 load_dotenv()
@@ -192,16 +192,16 @@ if __name__ == '__main__':
 
 
 # 5. Set this as an API endpoint via FastAPI
-app = FastAPI()
+# app = FastAPI()
 
 
-class Query(BaseModel):
-    query: str
+# class Query(BaseModel):
+#     query: str
 
 
-@app.post("/")
-def researchAgent(query: Query):
-    query = query.query
-    content = agent({"input": query})
-    actual_content = content['output']
-    return actual_content
+# @app.post("/")
+# def researchAgent(query: Query):
+#     query = query.query
+#     content = agent({"input": query})
+#     actual_content = content['output']
+#     return actual_content
