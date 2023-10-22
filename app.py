@@ -16,12 +16,14 @@ from bs4 import BeautifulSoup
 import requests
 import json
 from langchain.schema import SystemMessage
-from fastapi import FastAPI
+from fastapi import FastAPI, Header, HTTPException, Depends
 import streamlit as st
+
 
 load_dotenv()
 brwoserless_api_key = os.getenv("BROWSERLESS_API_KEY")
 serper_api_key = os.getenv("SERP_API_KEY")
+API_KEY = os.environ.get("API_KEY")
 
 # 1. Tool for search
 
@@ -198,8 +200,12 @@ app = FastAPI()
 class Query(BaseModel):
     query: str
 
+def get_api_key(api_key: str = Header(None)):
+    if api_key is None or api_key != API_KEY:
+        raise HTTPException(status_code=401, detail="Unauthorized")
+    return api_key
 
-@app.post("/")
+@app.post("/", dependencies=[Depends(get_api_key)])
 def researchAgent(query: Query):
     query = query.query
     content = agent({"input": query})
