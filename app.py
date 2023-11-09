@@ -16,7 +16,7 @@ from bs4 import BeautifulSoup
 import requests
 import json
 from langchain.schema import SystemMessage
-from fastapi import FastAPI, Header, HTTPException, Depends
+#from fastapi import FastAPI, Header, HTTPException, Depends
 import streamlit as st
 
 
@@ -87,7 +87,7 @@ def scrape_website(objective: str, url: str):
 
 
 def summary(objective, content):
-    llm = ChatOpenAI(temperature=0, model="gpt-3.5-turbo-16k-0613")
+    llm = ChatOpenAI(temperature=0, model="gpt-4-1106-preview")
 
     text_splitter = RecursiveCharacterTextSplitter(
         separators=["\n\n", "\n"], chunk_size=10000, chunk_overlap=500)
@@ -160,7 +160,7 @@ agent_kwargs = {
     "system_message": system_message,
 }
 
-llm = ChatOpenAI(temperature=0, model="gpt-3.5-turbo-16k-0613")
+llm = ChatOpenAI(temperature=0, model="gpt-4-1106-preview")
 memory = ConversationSummaryBufferMemory(
     memory_key="memory", return_messages=True, llm=llm, max_token_limit=1000)
 
@@ -194,20 +194,20 @@ if __name__ == '__main__':
 
 
 # 5. Set this as an API endpoint via FastAPI
-app = FastAPI()
+# app = FastAPI()
 
 
-class Query(BaseModel):
-    query: str
+# class Query(BaseModel):
+#     query: str
 
-def get_api_key(api_key: str = Header(None)):
-    if api_key is None or api_key != API_KEY:
-        raise HTTPException(status_code=401, detail="Unauthorized")
-    return api_key
+# def get_api_key(api_key: str = Header(None)):
+#     if api_key is None or api_key != API_KEY:
+#         raise HTTPException(status_code=401, detail="Unauthorized")
+#     return api_key
 
-@app.post("/", dependencies=[Depends(get_api_key)])
-def researchAgent(query: Query):
-    query = query.query
-    content = agent({"input": query})
-    actual_content = content['output']
-    return actual_content
+# @app.post("/", dependencies=[Depends(get_api_key)])
+# def researchAgent(query: Query):
+#     query = query.query
+#     content = agent({"input": query})
+#     actual_content = content['output']
+#     return actual_content
