@@ -11,3 +11,7 @@ Depending on the branch, it can be used as an API (FastAPI) or UI (Streamlit).
 - SERP API
 - Browserless
 - Streamlit
+
+
+## TODO
+Add the possibility to interact with scraped data and asking question.
